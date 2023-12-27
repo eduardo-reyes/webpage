@@ -12,16 +12,19 @@ Crear un esquema en MySQL. En la carpeta database/ se encuentran dos scripts SQL
 Para visualizar en su totalidad la página web, es necesario ejecutar ambos scripts en el correspondiente esquema MySQL.
 
 En el archivo application.properties en la carpeta API-DWF_v1.0.5 hacer los siguientes cambios en cada campo:
+
     1. En el url cambiar schema_name por el nombre del esquema correcto.
     2. En username cambiar root por el usuario MySQL relacionado con el esquema y los permisos necesarios.
     3. En password poner la constraseña de ese usuario.
     4. En path poner la ruta absoluta hasta el directorio donde se encuentra la carpeta del proyecto y finalizar con src/assets.
 
 Ejecutar en el proyecto:
+
     1. npm install -g @angular/cli
     2. npm install bootstrap jquery @popperjs/core
 
 Usando "npm install" instalar:
+
     1. NgxPhotoEditorModule
     2. sweetalert2
 
