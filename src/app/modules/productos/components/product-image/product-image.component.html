@@ -1,0 +1,199 @@
+<!-- Header de links -->
+<div class="card-header">
+    <div class="row">
+        <div class="col-md">
+            <span class="btn-return" (click)="redirect(['product'])">
+                <i class="ph cursor ph-arrow-circle-left icon-text-button"></i>
+                Regresar
+            </span>
+        </div>
+        
+        <div class="col-md">
+            <span class="edit-product" (click)="updateProduct()">
+                <i class="ph ph-note-pencil icon-text-button"></i>
+                Editar producto
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Contenido del producto -->
+<div class="contenedor">
+    <div class="producto">
+
+        <div class="imagenProducto">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <img [src]="ruta" alt="">
+                </div>
+                <a class="carousel-control-prev" (click)="prevImage()" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" (click)="nextImage()" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Siguiente</span>
+                </a>
+            </div>
+            <div class="edit-product-image text-center">
+                <label for="uploadImage" class="cursor-pointer">
+                    <input type="file" (change)="fileChangeHandler($event)" id="uploadImage" style="display:none">
+                    <i class="ph ph-note-pencil icon-text-button"></i>
+                    Editar imagen
+                </label>
+            </div>
+        </div>
+                
+
+                
+
+        <div class="informacionProducto">
+            <h1 class="tituloProducto">{{product.product}}</h1>
+             
+            <p class="descripcion">{{ product.description }}</p>
+            <h5 class="gtin">{{ product.gtin }}</h5>
+
+            <span>Stock: {{ product.stock }}</span>
+
+            <h3 class="precio">{{ product.price | currency }}</h3>
+
+            <div class="cantidadProductos">
+                <svg (click)="reducirCantidad()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);"><path d="M5 11h14v2H5z"></path></svg>
+                {{cantidadProducto}}
+                <svg (click)="aumentarCantidad()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+            </div>
+
+            <hr>
+
+            <button class="btn-compra" (click)="agregarAlCarrito()">AGREGAR AL CARRITO</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal --> 
+<div class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog" id="modalForm">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Actualizar producto </h4>
+          <button type="button" class="modal-close-button" data-bs-dismiss="modal" aria-label="Close">
+            <span class="modal-close-button-x">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <!-- form  -->
+  
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  
+            
+            <div class="row">
+
+                <!-- product_id  -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="product_id">ID del producto <span class="color-red">*</span> </label>
+                        <input type="text" class="form-control" formControlName="product_id" id="product_id" placeholder="ID del producto..." 
+                            [ngClass]="{'is-invalid': form.controls['product_id'].errors && submitted}" >
+                        <div *ngIf="form.controls['product_id'].errors && submitted">
+                            <small class="color-red">Favor de ingresar un ID válido</small>
+                        </div>
+                    </div>
+                </div>
+      
+                <!-- product  -->
+      
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                    <label for="product">Producto <span class="color-red">*</span> </label>
+                    <input type="text" class="form-control" formControlName="product" id="product" placeholder="Producto" 
+                        [ngClass]="{'is-invalid': form.controls['product'].errors && submitted}" >
+                    <div *ngIf="form.controls['product'].errors && submitted">
+                        <small class="color-red">Favor de ingresar un producto válido</small>
+                    </div>
+                    </div>
+                </div>
+      
+                <!-- gtin  -->
+      
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                    <label for="gtin">GTIN <span class="color-red">*</span> </label>
+                    <input type="text" class="form-control" formControlName="gtin" id="gtin" placeholder="GTIN del producto..." 
+                        [ngClass]="{'is-invalid': form.controls['gtin'].errors && submitted}" >
+                    <div *ngIf="form.controls['gtin'].errors && submitted">
+                        <small class="color-red">Favor de ingresar un GTIN válido</small>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- stock  -->
+      
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                    <label for="stock">Stock <span class="color-red">*</span> </label>
+                    <input type="text" class="form-control" formControlName="stock" id="stock" placeholder="Stock del producto..." 
+                        [ngClass]="{'is-invalid': form.controls['stock'].errors && submitted}" >
+                    <div *ngIf="form.controls['stock'].errors && submitted">
+                        <small class="color-red">Favor de ingresar una cantidad válida</small>
+                    </div>
+                    </div>
+                </div>  
+                
+                <!-- price -->
+      
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                    <label for="price"> Precio <span class="color-red">*</span> </label>
+                    <input type="text" class="form-control" formControlName="price" id="price" placeholder= "Precio del producto..." 
+                        [ngClass]="{'is-invalid': form.controls['price'].errors && submitted}" >
+                    <div *ngIf="form.controls['price'].errors && submitted">
+                        <small class="color-red">Favor de ingresar un precio válido</small>
+                    </div>
+                    </div>
+                </div> 
+      
+                <!-- category_id  -->
+      
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                      <label for="category_id">Categoría <span class="color-red">*</span> </label>
+                      <select class="form-select" formControlName="category_id" id="category_id"
+                          [ngClass]="{'is-invalid': form.controls['category_id'].errors && submitted}">
+                          <option [ngValue]=null hidden>Selecciona una categoría...</option>
+                          <ng-container *ngFor="let category of categories" >
+                              <option *ngIf="category.status == 1" [ngValue]="category.category_id">{{ category.category }}</option>
+                          </ng-container>
+                      </select>
+                      <div *ngIf="form.controls['category_id'].errors && submitted">
+                          <small class="color-red">Favor de seleccionar una categoría válida</small>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- description  -->
+      
+            <div class="col-md-6"> 
+                <div class="form-group">
+                <label for="description">Descripción <span class="color-red">*</span> </label>
+                <input type="text" class="form-control" formControlName="description" id="description" placeholder="Descrpción del producto..." 
+                    [ngClass]="{'is-invalid': form.controls['description'].errors && submitted}" >
+                <div *ngIf="form.controls['description'].errors && submitted">
+                    <small class="color-red">Favor de ingresar una descripción válida</small>
+                </div>
+                </div>
+            </div> 
+  
+            <!-- button  -->
+            
+            <div class="form-button">
+              <button type="submit" class="btn btn-primary btn-form">Guardar</button>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
